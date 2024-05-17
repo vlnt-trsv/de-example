@@ -1,0 +1,29 @@
+.container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.input {
+  padding: 8px 16px;
+  border: 1px solid var(--input-primary-color);
+  border-radius: 8px;
+  transition: all 0.2s ease-out;
+
+  &:disabled {
+    background-color: var(--input-disabled-color);
+    cursor: auto;
+  }
+}
+
+.error {
+  & input {
+    border: 2px solid;
+    border-color: var(--indicator-error);
+  }
+
+  & p {
+    color: var(--indicator-error);
+  }
+}
