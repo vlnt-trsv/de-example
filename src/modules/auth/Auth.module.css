@@ -1,7 +1,10 @@
 .auth {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
   gap: 16px;
+  height: 100vh;
 }
 
 .button__container {
@@ -19,7 +22,7 @@
   max-width: 400px;
 
   border-radius: 16px;
-  border: 1px solid var(--global-border-color);
+  background-color: var(--global-background-color);
   padding: 16px;
 }
 

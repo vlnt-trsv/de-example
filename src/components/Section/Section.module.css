@@ -1,0 +1,36 @@
+.section {
+  width: 100vw;
+  max-height: 500px;
+  background-color: var(--global-background-color);
+  border-radius: 8px;
+
+  display: flex;
+  align-items: center;
+  text-align: center;
+}
+
+.padding {
+  padding: 16px;
+}
+
+.justifyСontent {
+  justify-content: space-between;
+}
+
+.gap {
+  gap: 16px;
+}
+
+.banner {
+  width: 100%;
+  height: 300px;
+  border: 1px solid var(--global-border-color);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

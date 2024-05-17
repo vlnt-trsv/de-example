@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import { Link, Outlet } from "react-router-dom";
 import styles from "./Profile.module.css";
-import Button from "../../components/Button/Button";
-import Typography from "../../components/Typography/Typography";
-import Avatar from "../../components/Avatar/Avatar";
+import Header from "../../components/Header/Header";
+import Aside from "../../components/Aside/Aside";
+import Main from "../../components/Main/Main";
 
 const Profile = () => {
   const navigation = [
@@ -24,33 +23,10 @@ const Profile = () => {
   });
 
   return (
-    <div className={styles.profile}>
-      <header className={styles.header}>
-        <Link to={"/"}>
-          <button>Вернутся</button>
-        </Link>
-      </header>
-      <div className={styles.content}>
-        <aside className={styles.aside} key={navigation?.to}>
-          <Avatar img={user?.avatar} alt={user?.name} />
-          <Typography tag="h3">
-            {user?.name} {user?.surname}
-          </Typography>
-          {navigation?.map((nav) => {
-            return (
-              <Link
-                to={nav.to}
-                style={{ width: "100%", textDecoration: "none" }}
-              >
-                <Button variant="outlined">{nav.text}</Button>
-              </Link>
-            );
-          })}
-        </aside>
-        <main className={styles.main}>
-          <Outlet />
-        </main>
-      </div>
+    <div className={`${styles.profile} container`}>
+      <Header className={styles.header} />
+      <Aside className={styles.aside} user={user} navigation={navigation} />
+      <Main className={styles.main} />
     </div>
   );
 };

@@ -4,6 +4,7 @@ import Typography from "../../../components/Typography/Typography";
 import Input from "../../../components/Input/Input";
 import Button from "../../../components/Button/Button";
 import { HomeIcon } from "../../../assets/icons/icons";
+import Tooltip from "../../../components/Tooltip/Tooltip";
 
 const Login = ({ styles, data }) => {
   const {
@@ -15,6 +16,7 @@ const Login = ({ styles, data }) => {
 
   const onSubmit = async (data) => {
     console.log("@login", data);
+    localStorage.setItem("user", JSON.stringify(data.email));
     navigate("/profile");
   };
 
@@ -65,11 +67,13 @@ const Login = ({ styles, data }) => {
       {errors.password && <span>{errors.password.message}</span>}
 
       <div className={styles.button__container}>
-        <Link to={"/"}>
-          <Button variant="outlined">
-            <HomeIcon size={24} />
-          </Button>
-        </Link>
+        <Tooltip title={"Домой"}>
+          <Link to={"/"}>
+            <Button variant="outlined">
+              <HomeIcon size={24} />
+            </Button>
+          </Link>
+        </Tooltip>
         <Button type="submit">Войти</Button>
       </div>
     </form>
