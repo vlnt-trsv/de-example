@@ -5,8 +5,9 @@ import Input from "../../../components/Input/Input";
 import Button from "../../../components/Button/Button";
 import { HomeIcon } from "../../../assets/icons/icons";
 import Tooltip from "../../../components/Tooltip/Tooltip";
+import { useAuth } from "../../../hooks/useAuth";
 
-const Login = ({ styles, data }) => {
+const Login = ({ styles }) => {
   const {
     register,
     handleSubmit,
@@ -14,10 +15,18 @@ const Login = ({ styles, data }) => {
   } = useForm();
   const navigate = useNavigate();
 
+  const { login } = useAuth();
+
+  // TODO: Добавить запрос на сервер
   const onSubmit = async (data) => {
     console.log("@login", data);
-    localStorage.setItem("user", JSON.stringify(data.email));
-    navigate("/profile");
+    if (data?.email === "valya-657@mail.ru" && data?.password === "12345") {
+      const token = "exampleToken";
+      login(token);
+      navigate("/profile");
+    } else {
+      alert("Неправильные данные");
+    }
   };
 
   const form = useForm();
@@ -39,14 +48,13 @@ const Login = ({ styles, data }) => {
             placeholder="Email"
             type="email"
             id="email"
-            {...(fieldState.error && { error: fieldState.error.message })}
+            error={errors.email?.message}
             {...register("email", {
               required: "Электронная почта обязательна",
             })}
           />
         )}
       />
-      {errors.email && <span>{errors.email.message}</span>}
 
       <Controller
         name="password"
@@ -57,14 +65,13 @@ const Login = ({ styles, data }) => {
             placeholder="Пароль"
             type="password"
             id="password"
-            {...(fieldState.error && { error: fieldState.error.message })}
+            error={errors.password?.message}
             {...register("password", {
               required: "Пароль обязательный",
             })}
           />
         )}
       />
-      {errors.password && <span>{errors.password.message}</span>}
 
       <div className={styles.button__container}>
         <Tooltip title={"Домой"}>

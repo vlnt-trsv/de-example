@@ -6,18 +6,13 @@ import Registration from "./registration/Registration";
 import Typography from "../../components/Typography/Typography";
 
 const Auth = () => {
-  const [data, setData] = useState({
-    email: "",
-    password: "",
-  });
-
   const [authState, setAuthState] = useState("login");
 
   return (
     <div className={styles.auth}>
       {authState === "login" ? (
         <>
-          <Login styles={styles} form={data} />
+          <Login styles={styles} />
           <Typography>
             Нет аккаунта?{" "}
             <Link onClick={() => setAuthState("registration")}>
@@ -27,7 +22,7 @@ const Auth = () => {
         </>
       ) : (
         <>
-          <Registration styles={styles} form={data} />
+          <Registration styles={styles} />
           <Typography>
             Есть аккаунт?{" "}
             <Link onClick={() => setAuthState("login")}>Войти</Link>

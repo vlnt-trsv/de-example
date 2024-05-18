@@ -5,8 +5,9 @@ import Input from "../../../components/Input/Input";
 import Button from "../../../components/Button/Button";
 import { HomeIcon } from "../../../assets/icons/icons";
 import Tooltip from "../../../components/Tooltip/Tooltip";
+import { useAuth } from "../../../hooks/useAuth";
 
-const Registration = ({ styles, data }) => {
+const Registration = ({ styles }) => {
   const {
     register,
     handleSubmit,
@@ -14,9 +15,13 @@ const Registration = ({ styles, data }) => {
   } = useForm();
   const navigate = useNavigate();
 
+  const { login } = useAuth();
+
   const onSubmit = async (data) => {
     console.log("@reg", data);
+    const token = "exampleToken";
     localStorage.setItem("user", JSON.stringify(data.email));
+    login(token);
     navigate("/profile");
   };
 
@@ -33,38 +38,36 @@ const Registration = ({ styles, data }) => {
       <Controller
         name="email"
         control={form?.control}
-        render={({ field, fieldState }) => (
+        render={({ field }) => (
           <Input
             {...field}
             placeholder="Email"
             type="email"
             id="email"
-            {...(fieldState.error && { error: fieldState.error.message })}
+            error={errors.email?.message}
             {...register("email", {
               required: "Электронная почта обязательна",
             })}
           />
         )}
       />
-      {errors.email && <span>{errors.email.message}</span>}
 
       <Controller
         name="password"
         control={form?.control}
-        render={({ field, fieldState }) => (
+        render={({ field }) => (
           <Input
             {...field}
             placeholder="Пароль"
             type="password"
             id="password"
-            {...(fieldState.error && { error: fieldState.error.message })}
+            error={errors.password?.message}
             {...register("password", {
               required: "Пароль обязательный",
             })}
           />
         )}
       />
-      {errors.password && <span>{errors.password.message}</span>}
 
       <div className={styles.button__container}>
         <Tooltip title={"Домой"}>

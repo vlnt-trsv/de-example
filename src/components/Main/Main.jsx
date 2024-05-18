@@ -6,7 +6,7 @@ const Main = ({ className }) => {
   const location = useLocation();
   return (
     <div className={`${styles.main} ${className}`}>
-      {location.pathname === "/profile" ? "123" : <Outlet />}
+      {location.pathname === "/profile" ? "Добро пожаловать!" : <Outlet />}
     </div>
   );
 };
