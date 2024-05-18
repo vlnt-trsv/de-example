@@ -1,0 +1,8 @@
+.request {
+  border: 1px solid var(--global-border-color);
+  border-radius: 8px;
+  padding: 16px;
+  min-width: 150px;
+  flex-grow: 1;
+  cursor: pointer;
+}

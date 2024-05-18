@@ -5,7 +5,12 @@ import Typography from "../Typography/Typography";
 import { NavLink } from "react-router-dom";
 import Button from "../Button/Button";
 
-const Aside = ({ navigation, user, className }) => {
+const Aside = ({ user, className }) => {
+  const navigation = [
+    { to: "user", text: "Персональные данные" },
+    { to: "allRequest", text: "Все заявки" },
+  ];
+
   return (
     <aside className={`${styles.aside} ${className}`}>
       <Avatar img={user?.avatar} alt={user?.name} />

@@ -5,11 +5,6 @@ import Aside from "../../components/Aside/Aside";
 import Main from "../../components/Main/Main";
 
 const Profile = () => {
-  const navigation = [
-    { to: "user", text: "Персональные данные" },
-    { to: "request", text: "Создать новую заявку" },
-  ];
-
   const [user, setUser] = useState({
     role: "admin",
     name: "Валентин",
@@ -25,7 +20,7 @@ const Profile = () => {
   return (
     <div className={`${styles.profile} container`}>
       <Header className={styles.header} user={user} />
-      <Aside className={styles.aside} user={user} navigation={navigation} />
+      <Aside className={styles.aside} user={user} />
       <Main className={styles.main} />
     </div>
   );
