@@ -5,14 +5,14 @@ import Typography from "../../../../components/Typography/Typography";
 import Button from "../../../../components/Button/Button";
 
 const NewRequest = () => {
-  const [title, setTitle] = useState("");
   const [car, setCar] = useState("");
   const [date, setDate] = useState("");
+  const [status] = useState("Новое"); // Новое, подтверждено, отклонено
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const newCard = { id: Date.now(), title, car, date };
+    const newCard = { id: Date.now(), car, date, status };
     const storedCards = JSON.parse(localStorage.getItem("cards")) || [];
     localStorage.setItem("cards", JSON.stringify([...storedCards, newCard]));
     navigate("/profile/allRequest");
@@ -40,11 +40,9 @@ const NewRequest = () => {
             required
           />
         </label>
-        <div className={styles.button}>
-          <Button type="submit" variant="outlined">
-            Создать
-          </Button>
-        </div>
+        <Button type="submit" variant="outlined">
+          Создать
+        </Button>
       </form>
     </div>
   );

@@ -5,9 +5,11 @@ import Button from "../Button/Button";
 const RequestCard = ({ data }) => {
   return (
     <div className={styles.request}>
-      <div className={styles.info}>{data.title}</div>
-      <div className={styles.info}>{data.car}</div>
-      <div className={styles.info}>{data.date}</div>
+      <div className={styles.info}>
+        <p>Автомобиль: {data.car}</p>
+        <p>Дата бронирования: {data.date}</p>
+        <p>Статус: {data.status}</p>
+      </div>
     </div>
   );
 };

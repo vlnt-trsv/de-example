@@ -1,0 +1,11 @@
+.admin,
+.buttons,
+.cards {
+  display: flex;
+  gap: 16px;
+}
+
+.admin,
+.cards {
+  flex-direction: column;
+}

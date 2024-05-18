@@ -6,6 +6,7 @@ import {
   RequestCard,
 } from "../../../../components/RequestCard/RequestCard";
 import Typography from "../../../../components/Typography/Typography";
+import Tooltip from "../../../../components/Tooltip/Tooltip";
 
 const AllRequest = () => {
   const [cards, setCards] = useState([]);
@@ -26,7 +27,9 @@ const AllRequest = () => {
       </div>
       <div className={styles.all}>
         {cards.map((card) => (
-          <RequestCard key={card.id} data={card} />
+          <Tooltip title={card.car}>
+            <RequestCard key={card.id} data={card} />
+          </Tooltip>
         ))}
       </div>
     </>

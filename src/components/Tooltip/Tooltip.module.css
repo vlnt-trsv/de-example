@@ -5,7 +5,7 @@
 
 .title {
   position: absolute;
-  bottom: -100%;
+  margin-top: 5px;
   left: 50%;
   transform: translateX(-50%);
   background-color: black;
