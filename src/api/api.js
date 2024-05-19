@@ -11,7 +11,7 @@ const apiClient = axios.create({
 
 export const getCars = async () => {
   try {
-    const response = await apiClient.get("/cars");
+    const response = await apiClient.get("/car");
     return response.data;
   } catch (error) {
     console.error("Error fetching cars:", error);
@@ -21,7 +21,7 @@ export const getCars = async () => {
 
 export const getRequests = async () => {
   try {
-    const response = await apiClient.get("/requests");
+    const response = await apiClient.get("/request");
     return response.data;
   } catch (error) {
     console.error("Error fetching requests:", error);
@@ -31,7 +31,7 @@ export const getRequests = async () => {
 
 export const getStatuses = async () => {
   try {
-    const response = await apiClient.get("/statuses");
+    const response = await apiClient.get("/status");
     return response.data;
   } catch (error) {
     console.error("Error fetching statuses:", error);
@@ -78,6 +78,38 @@ export const logout = async () => {
     return response.data; // Возвращаем сообщение об успешном выходе
   } catch (error) {
     console.error("Error logging out:", error);
+    throw error;
+  }
+};
+
+// Функции для работы с заказами
+
+export const createRequest = async (requestData) => {
+  try {
+    const response = await apiClient.post("/request", requestData);
+    return response.data; // Возвращаем сообщение об успешном создании заказа и его ID
+  } catch (error) {
+    console.error("Error creating request:", error);
+    throw error;
+  }
+};
+
+export const updateRequest = async (id, requestData) => {
+  try {
+    const response = await apiClient.put(`/request/${id}`, requestData);
+    return response.data; // Возвращаем сообщение об успешном обновлении заказа
+  } catch (error) {
+    console.error("Error updating request:", error);
+    throw error;
+  }
+};
+
+export const deleteRequest = async (id) => {
+  try {
+    const response = await apiClient.delete(`/request/${id}`);
+    return response.data; // Возвращаем сообщение об успешном удалении заказа
+  } catch (error) {
+    console.error("Error deleting request:", error);
     throw error;
   }
 };

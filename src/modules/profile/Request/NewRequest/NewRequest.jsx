@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styles from "./NewRequest.module.css";
 import Typography from "../../../../components/Typography/Typography";
 import Button from "../../../../components/Button/Button";
+import { createRequest } from "../../../../api/api";
 
 const NewRequest = () => {
   const [car, setCar] = useState("");
@@ -10,12 +11,17 @@ const NewRequest = () => {
   const [status] = useState("Новое"); // Новое, подтверждено, отклонено
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const newCard = { id: Date.now(), car, date, status };
-    const storedCards = JSON.parse(localStorage.getItem("cards")) || [];
-    localStorage.setItem("cards", JSON.stringify([...storedCards, newCard]));
-    navigate("/profile/allRequest");
+    const newRequest = { car, date, status };
+
+    try {
+      await createRequest(newRequest); // Отправляем данные на сервер
+      navigate("/profile/allRequest");
+    } catch (error) {
+      console.error("Error creating request:", error);
+      // Обработка ошибок (например, вывод сообщения пользователю)
+    }
   };
 
   return (

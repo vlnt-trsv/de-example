@@ -1,10 +1,13 @@
 # React + Vite
 
-## Запуск клиента
+## Перед запуском
 
 - npm install (установка зависимостей)
-- npm run dev (запуск клиента)
 
-## Запуск сервера
+### Запуск клиента
 
-- node ./server/server.cjs
+- npm run client
+
+### Запуск сервера
+
+- npm run server

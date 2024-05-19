@@ -7,17 +7,26 @@ import {
 } from "../../../../components/RequestCard/RequestCard";
 import Typography from "../../../../components/Typography/Typography";
 import Tooltip from "../../../../components/Tooltip/Tooltip";
+import { getRequests } from "../../../../api/api";
 
 const AllRequest = () => {
   const [cards, setCards] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const storedCards = localStorage.getItem("cards");
-    if (storedCards) {
-      setCards(JSON.parse(storedCards));
-    }
+    const fetchRequests = async () => {
+      try {
+        const data = await getRequests(); // Получаем заказы с сервера
+        setCards(data); // Обновляем состояние
+      } catch (error) {
+        console.error("Error fetching requests:", error);
+      }
+    };
+
+    fetchRequests();
   }, []);
+
+  // TODO: Сделать useFilter для фильтрации заказов
 
   return (
     <>
