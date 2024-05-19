@@ -27,7 +27,7 @@ const AllRequest = () => {
       </div>
       <div className={styles.all}>
         {cards.map((card) => (
-          <Tooltip title={card.car}>
+          <Tooltip key={card.id} title={card.car}>
             <RequestCard key={card.id} data={card} />
           </Tooltip>
         ))}

@@ -15,14 +15,10 @@ const Registration = ({ styles }) => {
   } = useForm();
   const navigate = useNavigate();
 
-  const { login } = useAuth();
+  const { handleRegister } = useAuth();
 
   const onSubmit = async (data) => {
-    console.log("@reg", data);
-    const token = "exampleToken";
-    localStorage.setItem("user", JSON.stringify(data.email));
-    login(token);
-    navigate("/profile");
+    await handleRegister(data);
   };
 
   const form = useForm();

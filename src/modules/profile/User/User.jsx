@@ -6,12 +6,13 @@ const User = () => {
   return (
     <>
       <Typography tag="h3">Персональные данные</Typography>
-      <Typography>{data?.role}</Typography>
-      <Typography>{data?.name}</Typography>
-      <Typography>{data?.surname}</Typography>
-      <Typography>{data?.patronymic}</Typography>
-      <Typography>{data?.email}</Typography>
-      <Typography>{data?.phone}</Typography>
+      <Typography>Id - {data?.id}</Typography>
+      <Typography>Id Role - {data?.id_role}</Typography>
+      <Typography>Full Name - {data?.full_name}</Typography>
+      <Typography>Password - {data?.password}</Typography>
+      <Typography>Email - {data?.email}</Typography>
+      <Typography>Phone - {data?.phone}</Typography>
+      <Typography>Driver License - {data?.driver_license}</Typography>
     </>
   );
 };

@@ -15,6 +15,7 @@ const Input = React.forwardRef(
         <input
           className={clsx(styles.input, className)}
           {...props}
+          autoComplete="off"
           id={id}
           ref={ref || internalId}
         />

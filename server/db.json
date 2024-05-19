@@ -1,0 +1,39 @@
+{
+  "cars": [{ "id": 1, "name": "Пример автомобиля" }],
+  "requests": [
+    {
+      "id": 3,
+      "id_user": 3,
+      "id_car": 1,
+      "id_status": 1,
+      "booking_date": "2023-08-17"
+    },
+    {
+      "id": 4,
+      "id_user": 3,
+      "id_car": 1,
+      "id_status": 3,
+      "booking_date": "2023-08-25"
+    }
+  ],
+  "roles": [
+    { "id": 1, "code": "user", "name": "Зарегистрированный пользователь" },
+    { "id": 2, "code": "admin", "name": "Администратор" }
+  ],
+  "statuses": [
+    { "id": 1, "code": "new", "name": "Новое" },
+    { "id": 3, "code": "canceled", "name": "Отменено" },
+    { "id": 4, "code": "confirmed", "name": "Подтверждено" }
+  ],
+  "users": [
+    {
+      "id": 3,
+      "id_role": 1,
+      "password": "user",
+      "full_name": "Иванов Иван Иванович",
+      "phone": "91111111111",
+      "email": "user@user.ru",
+      "driver_license": "11 11 111111"
+    }
+  ]
+}

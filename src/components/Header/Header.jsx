@@ -12,7 +12,7 @@ const Header = ({ logo, className }) => {
 
   const isProfilePath = location.pathname.startsWith("/profile");
 
-  const { logout, isAuthenticated } = useAuth();
+  const { handleLogout, isAuthenticated } = useAuth();
 
   return (
     <header className={`${styles.header} ${className} container`}>
@@ -20,12 +20,11 @@ const Header = ({ logo, className }) => {
         <Link to={"/"}>{logo || "LOGOTYPE"}</Link>
       </div>
       <div className={styles.action}>
-        {isProfilePath && isAuthenticated && user && user?.role === "admin" && (
+        {isProfilePath && isAuthenticated && user && user?.id_role === 2 && (
           <Link to="/admin">
             <Button variant="text">Админ</Button>
           </Link>
         )}
-        {location.pathname === "/profile"}
         {!isAuthenticated ? (
           <Link to="/auth">
             <Button variant="text">Войти</Button>
@@ -38,7 +37,7 @@ const Header = ({ logo, className }) => {
           )
         )}
         {isAuthenticated && (
-          <div onClick={logout}>
+          <div onClick={handleLogout}>
             <Button variant="text">
               <ExitIcon size={24} />
             </Button>

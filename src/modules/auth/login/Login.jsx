@@ -15,18 +15,12 @@ const Login = ({ styles }) => {
   } = useForm();
   const navigate = useNavigate();
 
-  const { login } = useAuth();
+  const { handleLogin } = useAuth();
 
-  // TODO: Добавить запрос на сервер
   const onSubmit = async (data) => {
-    console.log("@login", data);
-    if (data?.email === "valya-657@mail.ru" && data?.password === "12345") {
-      const token = "exampleToken";
-      login(token);
-      navigate("/profile");
-    } else {
-      alert("Неправильные данные");
-    }
+    const { email, password } = data;
+    await handleLogin(email, password);
+    navigate("/profile");
   };
 
   const form = useForm();
