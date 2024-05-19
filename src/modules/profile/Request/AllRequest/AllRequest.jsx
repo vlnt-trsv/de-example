@@ -11,6 +11,7 @@ import { getRequests } from "../../../../api/api";
 
 const AllRequest = () => {
   const [cards, setCards] = useState([]);
+  console.log(cards)
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -26,7 +27,6 @@ const AllRequest = () => {
     fetchRequests();
   }, []);
 
-  // TODO: Сделать useFilter для фильтрации заказов
 
   return (
     <>
@@ -36,7 +36,7 @@ const AllRequest = () => {
       </div>
       <div className={styles.all}>
         {cards.map((card) => (
-          <Tooltip key={card.id} title={card.car}>
+          <Tooltip key={card.id} title={card.id_car}>
             <RequestCard key={card.id} data={card} />
           </Tooltip>
         ))}

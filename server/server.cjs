@@ -6,6 +6,15 @@ const jwt = require("jsonwebtoken");
 const app = express();
 const port = 3000;
 
+// Функция для генерации уникального идентификатора длиной 11 чисел
+const generateId = () => {
+  const timestamp = Date.now().toString(); // Время в миллисекундах
+  const randomPart = Math.floor(Math.random() * 1000000)
+    .toString()
+    .padStart(6, "0"); // Случайное число от 0 до 999999, дополненное нулями
+  return timestamp.slice(-3) + randomPart; // Берем последние 5 цифр времени и добавляем случайное число
+};
+
 ////////////////////////////////////////////////////////////
 ////////////////////   CONFIG   ////////////////////////////
 ////////////////////////////////////////////////////////////
@@ -146,8 +155,14 @@ app.post("/api/logout", (req, res) => {
 
 //////////////////////////////////////////////////////////// Маршрут для работы с заказами
 app.post("/api/request", (req, res) => {
-  const { car, date, status } = req.body;
-  const newRequest = { car, date, status };
+  const { id_user, id_car, booking_date } = req.body;
+  const newRequest = {
+    id: generateId(),
+    id_user,
+    id_car,
+    booking_date,
+    id_status: 1, // Статус "Новый"
+  };
 
   db.query("INSERT INTO request SET ?", newRequest, (err, results) => {
     if (err) {
@@ -159,17 +174,20 @@ app.post("/api/request", (req, res) => {
   });
 });
 
-app.put("/api/request/:id", async (req, res) => {
+app.put("/api/request/:id", (req, res) => {
   const { id } = req.params;
-  const { id_user, id_car, id_status, booking_date } = req.body;
-  const updatedRequest = { id_user, id_car, id_status, booking_date };
+  const { id_status } = req.body;
 
-  try {
-    await db.query("UPDATE request SET ? WHERE id = ?", [updatedRequest, id]);
-    res.json({ message: "Заказ успешно обновлен" });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+  db.query(
+    "UPDATE request SET id_status = ? WHERE id = ?",
+    [id_status, id],
+    (err, results) => {
+      if (err) {
+        return res.status(500).json({ error: err.message });
+      }
+      res.json({ message: "Статус успешно обновлен" });
+    }
+  );
 });
 
 app.delete("/api/request/:id", async (req, res) => {

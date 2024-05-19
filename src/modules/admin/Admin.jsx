@@ -2,23 +2,53 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "./Admin.module.css";
 import Button from "../../components/Button/Button";
+import { getRequests, updateRequest } from "../../api/api";
+import useFilter from "../../hooks/useFilter";
 
 const Admin = () => {
   const [cards, setCards] = useState([]);
+  const { filteredData, filters, updateFilters, clearFilters } =
+    useFilter(cards);
+  console.log(filteredData);
+  console.log(filters);
+
+  const textStatus = (id) => {
+    switch (id) {
+      case 1:
+        return "Новое";
+      case 3:
+        return "Отменено";
+      case 4:
+        return "Подтверждено";
+      default:
+        return "Статус неизвестен";
+    }
+  };
+  const textCar = (id) => {
+    switch (id) {
+      case 1:
+        return "BMW";
+      case 2:
+        return "Hyundai";
+      default:
+        return "Марка неизвестна";
+    }
+  };
 
   useEffect(() => {
-    const storedCards = JSON.parse(localStorage.getItem("cards")) || [];
-    setCards(storedCards);
+    const fetchRequests = async () => {
+      const data = await getRequests();
+      setCards(data);
+    };
+    fetchRequests();
   }, []);
 
-  const handleStatusChange = (id, newStatus) => {
+  const handleStatusChange = async (id, newStatus) => {
     const updatedCards = cards.map((card) =>
-      card.id === id ? { ...card, status: newStatus } : card
+      card.id === id ? { ...card, id_status: newStatus } : card
     );
     setCards(updatedCards);
-
-    // Обновляем данные в localStorage
-    localStorage.setItem("cards", JSON.stringify(updatedCards));
+    await updateRequest(id, newStatus);
   };
 
   return (
@@ -27,21 +57,43 @@ const Admin = () => {
         <button>Вернуться</button>
       </Link>
       <h2>Администраторская панель</h2>
+      <div className={styles.filters}>
+        <select
+          value={filters.status}
+          onChange={(e) => updateFilters({ status: e.target.value })}
+        >
+          <option value="">Выберите статус</option>
+          <option value="1">Новое</option>
+          <option value="3">Отменено</option>
+          <option value="4">Подтверждено</option>
+        </select>
+        <select
+          value={filters.car}
+          onChange={(e) => updateFilters({ car: e.target.value })}
+        >
+          <option value="">Выберите марку</option>
+          <option value="1">BMW</option>
+          <option value="2">Hyundai</option>
+        </select>
+        <button onClick={clearFilters}>Сбросить фильтры</button>
+      </div>
       <div className={styles.cards}>
-        {cards.map((card) => (
+        {filteredData.map((card) => (
           <div key={card.id} className={styles.card}>
-            <h3>{card.car} - {card.date}</h3>
-            <p>Статус: {card.status}</p>
+            <h3>
+              {textCar(card.id_car)} - {card.booking_date}
+            </h3>
+            <p>Статус: {textStatus(card.id_status)}</p>
             <div className={styles.buttons}>
               <Button
                 variant="outlined"
-                onClick={() => handleStatusChange(card.id, "Подтверждено")}
+                onClick={() => handleStatusChange(card.id, 4)}
               >
                 Подтверждено
               </Button>
               <Button
                 variant="outlined"
-                onClick={() => handleStatusChange(card.id, "Отклонено")}
+                onClick={() => handleStatusChange(card.id, 3)}
               >
                 Отклонено
               </Button>

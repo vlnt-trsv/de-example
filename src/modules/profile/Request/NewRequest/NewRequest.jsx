@@ -1,28 +1,42 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./NewRequest.module.css";
 import Typography from "../../../../components/Typography/Typography";
 import Button from "../../../../components/Button/Button";
-import { createRequest } from "../../../../api/api";
+import { createRequest, getCars } from "../../../../api/api";
 
 const NewRequest = () => {
-  const [car, setCar] = useState("");
+  const user = JSON.parse(localStorage.getItem("user"));
+  const [cars, setCars] = useState([]);
+  const [selectedCar, setSelectedCar] = useState("");
   const [date, setDate] = useState("");
-  const [status] = useState("Новое"); // Новое, подтверждено, отклонено
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const newRequest = { car, date, status };
+    const newRequest = {
+      id_user: user.id,
+      id_car: selectedCar,
+      booking_date: date,
+    };
 
     try {
-      await createRequest(newRequest); // Отправляем данные на сервер
       navigate("/profile/allRequest");
+      await createRequest(newRequest); // Отправляем данные на сервер
     } catch (error) {
       console.error("Error creating request:", error);
       // Обработка ошибок (например, вывод сообщения пользователю)
     }
   };
+
+  useEffect(() => {
+    const fetchCars = async () => {
+      const data = await getCars();
+      setCars(data);
+    };
+
+    fetchCars();
+  }, []);
 
   return (
     <div className={styles.newRequest}>
@@ -30,11 +44,17 @@ const NewRequest = () => {
       <form onSubmit={handleSubmit} className={styles.form}>
         <label>
           Автомобиль:
-          <select value={car} onChange={(e) => setCar(e.target.value)} required>
+          <select
+            value={selectedCar}
+            onChange={(e) => setSelectedCar(e.target.value)}
+            required
+          >
             <option value="">Выберите автомобиль</option>
-            <option value="BMW">BMW</option>
-            <option value="Mercedes">Mercedes</option>
-            <option value="Audi">Audi</option>
+            {cars.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.name}
+              </option>
+            ))}
           </select>
         </label>
         <label>

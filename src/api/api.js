@@ -87,6 +87,7 @@ export const logout = async () => {
 export const createRequest = async (requestData) => {
   try {
     const response = await apiClient.post("/request", requestData);
+    console.log(response);
     return response.data; // Возвращаем сообщение об успешном создании заказа и его ID
   } catch (error) {
     console.error("Error creating request:", error);
@@ -94,10 +95,10 @@ export const createRequest = async (requestData) => {
   }
 };
 
-export const updateRequest = async (id, requestData) => {
+export const updateRequest = async (id, id_status) => {
   try {
-    const response = await apiClient.put(`/request/${id}`, requestData);
-    return response.data; // Возвращаем сообщение об успешном обновлении заказа
+    const response = await apiClient.put(`/request/${id}`, { id_status });
+    return response.data;
   } catch (error) {
     console.error("Error updating request:", error);
     throw error;
