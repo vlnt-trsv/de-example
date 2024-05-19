@@ -1,5 +1,10 @@
 # React + Vite
 
-## MySql
+## Запуск клиента
 
-- node ./server/mock-server.cjs
+- npm install (установка зависимостей)
+- npm run dev (запуск клиента)
+
+## Запуск сервера
+
+- node ./server/server.cjs
