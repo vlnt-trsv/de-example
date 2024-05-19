@@ -33,38 +33,24 @@ const Login = ({ styles }) => {
         Введите электронную почту
       </Typography>
 
-      <Controller
-        name="email"
-        control={form?.control}
-        render={({ field, fieldState }) => (
-          <Input
-            {...field}
-            placeholder="Email"
-            type="email"
-            id="email"
-            error={errors.email?.message}
-            {...register("email", {
-              required: "Электронная почта обязательна",
-            })}
-          />
-        )}
+      <Input
+        placeholder="Email"
+        type="email"
+        id="email"
+        error={errors.email?.message}
+        {...register("email", {
+          required: "Электронная почта обязательна",
+        })}
       />
 
-      <Controller
-        name="password"
-        control={form?.control}
-        render={({ field, fieldState }) => (
-          <Input
-            {...field}
-            placeholder="Пароль"
-            type="password"
-            id="password"
-            error={errors.password?.message}
-            {...register("password", {
-              required: "Пароль обязательный",
-            })}
-          />
-        )}
+      <Input
+        placeholder="Пароль"
+        type="password"
+        id="password"
+        error={errors.password?.message}
+        {...register("password", {
+          required: "Пароль обязательный",
+        })}
       />
 
       <div className={styles.button__container}>

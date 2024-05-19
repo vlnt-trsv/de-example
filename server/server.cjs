@@ -60,9 +60,13 @@ app.get("/api/car", async (req, res) => {
   }
 });
 
-app.get("/api/request", async (req, res) => {
+app.get("/api/request/:id_user", async (req, res) => {
+  const { id_user } = req.params;
   try {
-    const [results] = await db.query("SELECT * FROM request");
+    const [results] = await db.query(
+      "SELECT * FROM request WHERE id_user = ?",
+      [id_user]
+    );
     res.json(results);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -154,7 +158,7 @@ app.post("/api/logout", (req, res) => {
 });
 
 //////////////////////////////////////////////////////////// Маршрут для работы с заказами
-app.post("/api/request", (req, res) => {
+app.post("/api/request/", (req, res) => {
   const { id_user, id_car, booking_date } = req.body;
   const newRequest = {
     id: generateId(),

@@ -19,6 +19,16 @@ export const getCars = async () => {
   }
 };
 
+export const getRequestsById = async (id_user) => {
+  try {
+    const response = await apiClient.get(`/request/${id_user}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching requests:", error);
+    throw error;
+  }
+};
+
 export const getRequests = async () => {
   try {
     const response = await apiClient.get("/request");

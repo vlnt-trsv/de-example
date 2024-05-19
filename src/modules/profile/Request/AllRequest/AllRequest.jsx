@@ -6,18 +6,17 @@ import {
   RequestCard,
 } from "../../../../components/RequestCard/RequestCard";
 import Typography from "../../../../components/Typography/Typography";
-import Tooltip from "../../../../components/Tooltip/Tooltip";
-import { getRequests } from "../../../../api/api";
+import { getRequestsById } from "../../../../api/api";
 
 const AllRequest = () => {
   const [cards, setCards] = useState([]);
-  console.log(cards)
+  const user = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchRequests = async () => {
       try {
-        const data = await getRequests(); // Получаем заказы с сервера
+        const data = await getRequestsById(user.id); // Получаем заказы с сервера
         setCards(data); // Обновляем состояние
       } catch (error) {
         console.error("Error fetching requests:", error);
@@ -27,7 +26,6 @@ const AllRequest = () => {
     fetchRequests();
   }, []);
 
-
   return (
     <>
       <Typography tag="h3">Все заявки</Typography>
@@ -35,11 +33,11 @@ const AllRequest = () => {
         <AddRequestCard onAdd={() => navigate("/profile/newRequest")} />
       </div>
       <div className={styles.all}>
-        {cards.map((card) => (
-          <Tooltip key={card.id} title={card.id_car}>
-            <RequestCard key={card.id} data={card} />
-          </Tooltip>
-        ))}
+        {cards.length !== 0 ? (
+          cards.map((card) => <RequestCard key={card.id} data={card} />)
+        ) : (
+          <Typography tag="p">Нет броней</Typography>
+        )}
       </div>
     </>
   );
