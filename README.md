@@ -1,9 +1,5 @@
-<!-- # React + Vite
+# React + Vite
 
-## JSON-server
+## MySql
 
-- json-server --watch ./server/db.json --port `port`
-
-## MOCK-server
-
-- node ./server/mock-server.js -->
+- node ./server/mock-server.cjs

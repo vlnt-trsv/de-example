@@ -43,8 +43,8 @@ app.get("/api/user", (req, res) => {
   });
 });
 
-app.get("/api/cars", (req, res) => {
-  conn.query("SELECT * FROM cars", (err, results) => {
+app.get("/api/car", (req, res) => {
+  conn.query("SELECT * FROM car", (err, results) => {
     if (err) {
       res.status(500).json({ error: err.message });
     } else {
@@ -53,8 +53,8 @@ app.get("/api/cars", (req, res) => {
   });
 });
 
-app.get("/api/requests", (req, res) => {
-  conn.query("SELECT * FROM requests", (err, results) => {
+app.get("/api/request", (req, res) => {
+  conn.query("SELECT * FROM request", (err, results) => {
     if (err) {
       res.status(500).json({ error: err.message });
     } else {
