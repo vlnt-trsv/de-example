@@ -21,7 +21,7 @@
   min-width: 400px;
   max-width: 400px;
 
-  border-radius: 16px;
+  border-radius: 8px;
   background-color: var(--global-background-color);
   padding: 16px;
 }

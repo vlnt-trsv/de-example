@@ -29,7 +29,7 @@
   --global-border-color: #dbdbdb;
   --global-background-color: #ffffff;
 
-  --indicator-error: "#f64c4c";
+  --indicator-error: #f64c4c;
 }
 
 body {
