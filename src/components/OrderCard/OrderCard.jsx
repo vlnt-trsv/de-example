@@ -10,7 +10,8 @@ const OrderCard = ({ order, products, statuses }) => {
     <div className={styles.order}>
       <div className={styles.info}>
         <p>Товар: {product ? product.name : "Неизвестный продукт"}</p>
-        <p>Количество: {order?.count}</p>
+        <p>Адрес: {order.address}</p>
+        <p>Количество: {order.count}</p>
         <p>Статус: {status ? status.name : "Неизвестный статус"}</p>
       </div>
     </div>
@@ -34,7 +35,11 @@ const AdminOrderCard = ({ order, products, statuses, handleStatusChange }) => {
   return (
     <div className={styles.card}>
       <h3>{product ? product.name : "Неизвестный продукт"}</h3>
-      <p>Статус: {status ? status.name : "Неизвестный статус"}</p>
+      <div className={styles.info}>
+        <p>Адрес: {order.count}</p>
+        <p>Количество: {order.count}</p>
+        <p>Статус: {status ? status.name : "Неизвестный статус"}</p>
+      </div>
       <div className={styles.buttons}>
         <Button
           variant="outlined"

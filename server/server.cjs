@@ -9,10 +9,10 @@ const port = 3000;
 // Функция для генерации уникального идентификатора длиной 11 чисел
 const generateId = () => {
   const timestamp = Date.now().toString(); // Время в миллисекундах
-  const randomPart = Math.floor(Math.random() * 1000000)
+  const randomPart = Math.floor(Math.random() * 100)
     .toString()
     .padStart(6, "0"); // Случайное число от 0 до 999999, дополненное нулями
-  return timestamp.slice(-3) + randomPart; // Берем последние 5 цифр времени и добавляем случайное число
+  return timestamp.slice(-2) + randomPart; // Берем последние 5 цифр времени и добавляем случайное число
 };
 
 ////////////////////////////////////////////////////////////
@@ -189,13 +189,13 @@ app.post("/api/logout", (req, res) => {
 
 //////////////////////////////////////////////////////////// Маршрут для работы с заказами
 app.post("/api/order/", (req, res) => {
-  const { id_user, id_product, count } = req.body;
+  const { id_user, id_product, count, address } = req.body;
   const newOrder = {
     id: generateId(),
     id_user,
     id_product,
     count,
-    address: "none",  // ДОБАВИТЬ АДРЕС
+    address,
     id_status: 1, // Статус "Новый"
   };
 

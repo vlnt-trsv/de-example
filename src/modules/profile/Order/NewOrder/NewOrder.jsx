@@ -10,6 +10,7 @@ const NewOrder = () => {
   const [products, setProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState("");
   const [count, setCount] = useState(1);
+  const [address, setAddress] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -18,6 +19,7 @@ const NewOrder = () => {
       id_user: user.id,
       id_product: selectedProduct,
       count: count,
+      address: address,
     };
 
     navigate("/profile/allOrder");
@@ -59,6 +61,15 @@ const NewOrder = () => {
             value={count}
             onChange={(e) => setCount(e.target.value)}
             min="1"
+            required
+          />
+        </label>
+        <label>
+          Введите адрес:
+          <input
+            type="text"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
             required
           />
         </label>
