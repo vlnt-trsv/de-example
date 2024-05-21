@@ -1,12 +1,16 @@
 import { Route, Routes } from "react-router-dom";
+
+// Роуты
 import Auth from "./modules/auth/Auth";
 import Admin from "./modules/admin/Admin";
 import Profile from "./modules/profile/Profile";
 import Home from "./modules/home/Home";
-import NewRequest from "./modules/profile/Request/NewRequest/NewRequest";
 import User from "./modules/profile/User/User";
+import NewOrder from "./modules/profile/Order/NewOrder/NewOrder";
+import AllOrder from "./modules/profile/Order/AllOrder/AllOrder";
+
+// Приватный роут
 import PrivateRoutes from "./routes/PrivateRoutes";
-import AllRequest from "./modules/profile/Request/AllRequest/AllRequest";
 
 function App() {
   return (
@@ -19,8 +23,8 @@ function App() {
         <Route path="admin" element={<Admin />} />
 
         <Route path="profile" element={<Profile />}>
-          <Route path="newRequest" element={<NewRequest />} />
-          <Route path="allRequest" element={<AllRequest />} />
+          <Route path="newOrder" element={<NewOrder />} />
+          <Route path="allOrder" element={<AllOrder />} />
           <Route path="user" element={<User />} />
         </Route>
       </Route>

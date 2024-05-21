@@ -8,7 +8,7 @@ import Button from "../Button/Button";
 const Aside = ({ className }) => {
   const navigation = [
     { to: "user", text: "Персональные данные" },
-    { to: "allRequest", text: "Все заявки" },
+    { to: "allOrder", text: "Все заявки" },
   ];
 
   const user = JSON.parse(localStorage.getItem("user") || "{}");

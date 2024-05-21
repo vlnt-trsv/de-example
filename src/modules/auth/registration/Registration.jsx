@@ -1,5 +1,5 @@
-import { Controller, useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { Link } from "react-router-dom";
 import Typography from "../../../components/Typography/Typography";
 import Input from "../../../components/Input/Input";
 import Button from "../../../components/Button/Button";
@@ -13,7 +13,6 @@ const Registration = ({ styles }) => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const navigate = useNavigate();
 
   const { handleRegister } = useAuth();
 
@@ -21,7 +20,13 @@ const Registration = ({ styles }) => {
     await handleRegister(data);
   };
 
-  const form = useForm();
+  const inputs = [
+    { name: "login", placeholder: "Логин", type: "text" },
+    { name: "password", placeholder: "Пароль", type: "password" },
+    { name: "full_name", placeholder: "Полное имя", type: "text" },
+    { name: "phone", placeholder: "Номер телефона", type: "tel" },
+    { name: "email", placeholder: "Электронная почта", type: "email" },
+  ];
 
   return (
     <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
@@ -31,25 +36,18 @@ const Registration = ({ styles }) => {
         Введите необходимые данные для регистрации
       </Typography>
 
-      <Input
-        placeholder="Email"
-        type="email"
-        id="email"
-        error={errors.email?.message}
-        {...register("email", {
-          required: "Электронная почта обязательна",
-        })}
-      />
-
-      <Input
-        placeholder="Пароль"
-        type="password"
-        id="password"
-        error={errors.password?.message}
-        {...register("password", {
-          required: "Пароль обязательный",
-        })}
-      />
+      {inputs.map((input) => (
+        <Input
+          key={input.name}
+          placeholder={input.placeholder}
+          type={input.type}
+          id={input.name}
+          error={errors[input.name]?.message}
+          {...register(input.name, {
+            required: `${input.placeholder} обязательно`,
+          })}
+        />
+      ))}
 
       <div className={styles.button__container}>
         <Tooltip title={"Домой"}>

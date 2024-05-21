@@ -8,11 +8,11 @@ const User = () => {
       <Typography tag="h3">Персональные данные</Typography>
       <Typography>Id - {data?.id}</Typography>
       <Typography>Id Role - {data?.id_role}</Typography>
-      <Typography>Full Name - {data?.full_name}</Typography>
+      <Typography>Login - {data?.login}</Typography>
       <Typography>Password - {data?.password}</Typography>
-      <Typography>Email - {data?.email}</Typography>
+      <Typography>Full Name - {data?.full_name}</Typography>
       <Typography>Phone - {data?.phone}</Typography>
-      <Typography>Driver License - {data?.driver_license}</Typography>
+      <Typography>Email - {data?.email}</Typography>
     </>
   );
 };

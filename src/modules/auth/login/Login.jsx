@@ -1,4 +1,4 @@
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import Typography from "../../../components/Typography/Typography";
 import Input from "../../../components/Input/Input";
@@ -18,12 +18,14 @@ const Login = ({ styles }) => {
   const { handleLogin } = useAuth();
 
   const onSubmit = async (data) => {
-    const { email, password } = data;
-    await handleLogin(email, password);
+    await handleLogin(data);
     navigate("/profile");
   };
 
-  const form = useForm();
+  const inputs = [
+    { name: "login", placeholder: "Логин", type: "text" },
+    { name: "password", placeholder: "Пароль", type: "password" },
+  ];
 
   return (
     <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
@@ -33,25 +35,18 @@ const Login = ({ styles }) => {
         Введите электронную почту
       </Typography>
 
-      <Input
-        placeholder="Email"
-        type="email"
-        id="email"
-        error={errors.email?.message}
-        {...register("email", {
-          required: "Электронная почта обязательна",
-        })}
-      />
-
-      <Input
-        placeholder="Пароль"
-        type="password"
-        id="password"
-        error={errors.password?.message}
-        {...register("password", {
-          required: "Пароль обязательный",
-        })}
-      />
+      {inputs.map((input) => (
+        <Input
+          key={input.name}
+          placeholder={input.placeholder}
+          type={input.type}
+          id={input.name}
+          error={errors[input.name]?.message}
+          {...register(input.name, {
+            required: `${input.placeholder} обязательный`,
+          })}
+        />
+      ))}
 
       <div className={styles.button__container}>
         <Tooltip title={"Домой"}>

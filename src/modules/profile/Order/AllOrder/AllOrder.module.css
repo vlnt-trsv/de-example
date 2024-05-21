@@ -1,10 +1,19 @@
-.all {
+.all,
+.cards,
+.add {
   display: flex;
+}
+
+.all {
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cards {
   flex-wrap: wrap;
   gap: 16px;
 }
 
 .add {
-  display: flex;
   margin-bottom: 16px;
 }

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 const useFilter = (cards) => {
   const [filters, setFilters] = useState({
     status: "",
-    car: "",
+    product: "",
   });
   const [filteredData, setFilteredData] = useState(cards);
 
@@ -15,7 +15,7 @@ const useFilter = (cards) => {
         matches = false;
       }
 
-      if (filters.car && card.id_car !== parseInt(filters.car)) {
+      if (filters.product && card.id_product !== parseInt(filters.product)) {
         matches = false;
       }
 
@@ -32,7 +32,7 @@ const useFilter = (cards) => {
   const clearFilters = () => {
     setFilters({
       status: "",
-      car: "",
+      product: "",
     });
   };
 

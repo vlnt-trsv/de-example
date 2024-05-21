@@ -24,7 +24,7 @@ app.use(express.json());
 const db = mysql.createPool({
   host: "localhost",
   user: "root",
-  database: "example",
+  database: "avoska",
   password: "root",
   waitForConnections: true,
   connectionLimit: 10,
@@ -42,29 +42,29 @@ app.use(
 ////////////////////   START GET REQUESTS   ////////////////
 ////////////////////////////////////////////////////////////
 
-app.get("/api/user", async (req, res) => {
+app.get("/api/users", async (req, res) => {
   try {
-    const [results] = await db.query("SELECT * FROM user");
+    const [results] = await db.query("SELECT * FROM `user`");
     res.json(results);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-app.get("/api/car", async (req, res) => {
+app.get("/api/orders", async (req, res) => {
   try {
-    const [results] = await db.query("SELECT * FROM car");
+    const [results] = await db.query("SELECT * FROM `order`");
     res.json(results);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-app.get("/api/request/:id_user", async (req, res) => {
+app.get("/api/orders/:id_user", async (req, res) => {
   const { id_user } = req.params;
   try {
     const [results] = await db.query(
-      "SELECT * FROM request WHERE id_user = ?",
+      "SELECT * FROM `order` WHERE id_user = ?",
       [id_user]
     );
     res.json(results);
@@ -73,9 +73,9 @@ app.get("/api/request/:id_user", async (req, res) => {
   }
 });
 
-app.get("/api/request", async (req, res) => {
+app.get("/api/products", async (req, res) => {
   try {
-    const [results] = await db.query("SELECT * FROM request");
+    const [results] = await db.query("SELECT * FROM `product`");
     res.json(results);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -84,7 +84,7 @@ app.get("/api/request", async (req, res) => {
 
 app.get("/api/status", async (req, res) => {
   try {
-    const [results] = await db.query("SELECT * FROM status");
+    const [results] = await db.query("SELECT * FROM `status`");
     res.json(results);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -97,24 +97,43 @@ app.get("/api/status", async (req, res) => {
 
 //////////////////////////////////////////////////////////// Маршрут для входа
 app.post("/api/login", async (req, res) => {
-  const { email, password } = req.body;
+  const { login, password } = req.body;
+
+  // Проверка, что все поля переданы
+  if (!login || !password) {
+    return res
+      .status(400)
+      .json({ message: "Пожалуйста, введите логин и пароль" });
+  }
+
   try {
-    const [results] = await db.query("SELECT * FROM user WHERE email = ?", [
-      email,
+    // Поиск пользователя по логину
+    const [results] = await db.query("SELECT * FROM user WHERE login = ?", [
+      login,
     ]);
+
+    // Проверка, существует ли пользователь
     if (results.length === 0) {
-      return res.status(400).json({ message: "Неверный email или пароль" });
+      return res
+        .status(400)
+        .json({ message: "Пользователь с таким логином не найден" });
     }
+
     const user = results[0];
-    const isPasswordValid = bcrypt.compareSync(password, user.password);
-    if (!isPasswordValid) {
-      return res.status(400).json({ message: "Неверный email или пароль" });
-    }
+
+    // // Проверка пароля
+    // const isPasswordValid = bcrypt.compareSync(password, user.password);
+    // if (!isPasswordValid) {
+    //   return res.status(400).json({ message: "Неверный логин или пароль" });
+    // }
+
+    // JWT Токен
     const token = jwt.sign(
       { id: user.id, role: user.id_role },
       "your_jwt_secret",
       { expiresIn: "1h" }
     );
+
     res.json({ token, user });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -123,29 +142,40 @@ app.post("/api/login", async (req, res) => {
 
 //////////////////////////////////////////////////////////// Маршрут для регистрации
 app.post("/api/register", async (req, res) => {
-  const { email, password } = req.body;
+  const { login, password, full_name, phone, email } = req.body;
+
+  // Проверка, что все поля переданы
+  if (!login || !password || !full_name || !phone || !email) {
+    return res.status(400).json({ message: "Все поля должны быть заполнены" });
+  }
 
   try {
-    const [results] = await db.query("SELECT * FROM user WHERE email = ?", [
-      email,
+    // Проверка, что пользователь с таким логином не существует
+    const [results] = await db.query("SELECT * FROM user WHERE login = ?", [
+      login,
     ]);
     if (results.length > 0) {
       return res
         .status(400)
-        .json({ message: "Пользователь с таким email уже существует" });
+        .json({ message: "Пользователь с таким логином уже существует" });
     }
 
-    const hashedPassword = bcrypt.hashSync(password, 10);
+    // // Хеширование пароля
+    // const hashedPassword = bcrypt.hashSync(password, 10);
+
+    // Создание нового пользователя
     const newUser = {
+      login,
+      password, // :hashedPassword
+      full_name,
+      phone,
       email,
-      password: hashedPassword,
-      full_name: "none",
-      phone: "none",
-      driver_license: "none",
-      id_role: 1,
+      id_role: 1, // Изначально роль - Пользователь
     };
 
+    // Внесение пользователя в базу данных
     await db.query("INSERT INTO user SET ?", newUser);
+
     res.status(201).json({ message: "Регистрация прошла успешно", newUser });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -158,17 +188,18 @@ app.post("/api/logout", (req, res) => {
 });
 
 //////////////////////////////////////////////////////////// Маршрут для работы с заказами
-app.post("/api/request/", (req, res) => {
-  const { id_user, id_car, booking_date } = req.body;
-  const newRequest = {
+app.post("/api/order/", (req, res) => {
+  const { id_user, id_product, count } = req.body;
+  const newOrder = {
     id: generateId(),
     id_user,
-    id_car,
-    booking_date,
+    id_product,
+    count,
+    address: "none",  // ДОБАВИТЬ АДРЕС
     id_status: 1, // Статус "Новый"
   };
 
-  db.query("INSERT INTO request SET ?", newRequest, (err, results) => {
+  db.query("INSERT INTO `order` SET ?", newOrder, (err, results) => {
     if (err) {
       return res.status(500).json({ error: err.message });
     }
@@ -178,12 +209,12 @@ app.post("/api/request/", (req, res) => {
   });
 });
 
-app.put("/api/request/:id", (req, res) => {
+app.put("/api/order/:id", (req, res) => {
   const { id } = req.params;
   const { id_status } = req.body;
 
   db.query(
-    "UPDATE request SET id_status = ? WHERE id = ?",
+    "UPDATE `order` SET id_status = ? WHERE id = ?",
     [id_status, id],
     (err, results) => {
       if (err) {
@@ -192,17 +223,6 @@ app.put("/api/request/:id", (req, res) => {
       res.json({ message: "Статус успешно обновлен" });
     }
   );
-});
-
-app.delete("/api/request/:id", async (req, res) => {
-  const { id } = req.params;
-
-  try {
-    await db.query("DELETE FROM request WHERE id = ?", [id]);
-    res.json({ message: "Заказ успешно удален" });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
 });
 
 ////////////////////////////////////////////////////////////

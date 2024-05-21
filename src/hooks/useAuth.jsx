@@ -33,10 +33,9 @@ export const AuthProvider = ({ children }) => {
     checkAuth();
   }, []);
 
-
-  const handleLogin = async (email, password) => {
+  const handleLogin = async (userData) => {
     try {
-      const { token, user } = await login(email, password);
+      const { token, user } = await login(userData);
       console.log(user, token);
       localStorage.setItem("token", token);
       localStorage.setItem("user", JSON.stringify(user));
@@ -52,7 +51,7 @@ export const AuthProvider = ({ children }) => {
     try {
       await register(userData);
       console.info("Регистрация прошла успешно!", userData);
-      handleLogin(userData.email, userData.password);
+      handleLogin(userData);
     } catch (error) {
       console.error("Ошибка регистрации:", error.response.data.message);
       alert(error.response.data.message);

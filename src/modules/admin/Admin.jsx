@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "./Admin.module.css";
 import Button from "../../components/Button/Button";
-import { getRequests, updateRequest } from "../../api/api";
+import { getOrders, updateOrder } from "../../api/api";
 import useFilter from "../../hooks/useFilter";
 
 const Admin = () => {
-  const [cards, setCards] = useState([]);
+  const [order, setOrder] = useState([]);
   const { filteredData, filters, updateFilters, clearFilters } =
-    useFilter(cards);
+    useFilter(order);
   console.log(filteredData);
   console.log(filters);
 
@@ -36,19 +36,19 @@ const Admin = () => {
   };
 
   useEffect(() => {
-    const fetchRequests = async () => {
-      const data = await getRequests();
-      setCards(data);
+    const fetchOrder = async () => {
+      const data = await getOrders();
+      setOrder(data);
     };
-    fetchRequests();
+    fetchOrder();
   }, []);
 
   const handleStatusChange = async (id, newStatus) => {
     const updatedCards = cards.map((card) =>
       card.id === id ? { ...card, id_status: newStatus } : card
     );
-    setCards(updatedCards);
-    await updateRequest(id, newStatus);
+    setOrder(updatedCards);
+    await updateOrder(id, newStatus);
   };
 
   return (

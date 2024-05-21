@@ -1,0 +1,30 @@
+import React from "react";
+import styles from "./OrderCard.module.css";
+import Button from "../Button/Button";
+
+const OrderCard = ({ order, products, statuses }) => {
+  const product = products.find((product) => product.id === order.id_product);
+  const status = statuses.find((status) => status.id === order.id_status);
+
+  return (
+    <div className={styles.order}>
+      <div className={styles.info}>
+        <p>Товар: {product ? product.name : "Неизвестный продукт"}</p>
+        <p>Количество: {order?.count}</p>
+        <p>Статус: {status ? status.name : "Неизвестный статус"}</p>
+      </div>
+    </div>
+  );
+};
+
+const AddOrderCard = ({ onAdd }) => {
+  return (
+    <div>
+      <Button variant={"outlined"} onClick={onAdd}>
+        Новая заявка
+      </Button>
+    </div>
+  );
+};
+
+export { OrderCard, AddOrderCard };
