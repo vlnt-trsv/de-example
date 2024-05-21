@@ -27,4 +27,30 @@ const AddOrderCard = ({ onAdd }) => {
   );
 };
 
-export { OrderCard, AddOrderCard };
+const AdminOrderCard = ({ order, products, statuses, handleStatusChange }) => {
+  const status = statuses.find((status) => status.id === order.id_status);
+  const product = products.find((product) => product.id === order.id_product);
+
+  return (
+    <div className={styles.card}>
+      <h3>{product ? product.name : "Неизвестный продукт"}</h3>
+      <p>Статус: {status ? status.name : "Неизвестный статус"}</p>
+      <div className={styles.buttons}>
+        <Button
+          variant="outlined"
+          onClick={() => handleStatusChange(order.id, 2)}
+        >
+          Подтверждено
+        </Button>
+        <Button
+          variant="outlined"
+          onClick={() => handleStatusChange(order.id, 3)}
+        >
+          Отклонено
+        </Button>
+      </div>
+    </div>
+  );
+};
+
+export { OrderCard, AddOrderCard, AdminOrderCard };

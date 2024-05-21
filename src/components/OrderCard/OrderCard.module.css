@@ -1,7 +1,19 @@
-.order {
+.order,
+.card {
   border: 1px solid var(--global-border-color);
   border-radius: 8px;
   padding: 16px;
   min-width: 200px;
-  cursor: pointer;
+}
+
+.card,
+.buttons {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+}
+
+.card {
+  align-items: flex-start;
+  flex-direction: column;
 }

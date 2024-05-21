@@ -1,11 +1,17 @@
-.admin,
-.buttons,
-.cards {
-  display: flex;
+.admin {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
   gap: 16px;
 }
 
-.admin,
-.cards {
+.info {
+  display: inline-flex;
   flex-direction: column;
+  align-items: flex-start;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
 }

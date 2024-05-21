@@ -1,106 +1,66 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "./Admin.module.css";
-import Button from "../../components/Button/Button";
+import { AdminOrderCard } from "../../components/OrderCard/OrderCard";
 import { getOrders, updateOrder } from "../../api/api";
 import useFilter from "../../hooks/useFilter";
+import Filter from "../../components/Filter/Filter";
+import Section from "../../components/Section/Section";
+import Button from "../../components/Button/Button";
 
 const Admin = () => {
-  const [order, setOrder] = useState([]);
-  const { filteredData, filters, updateFilters, clearFilters } =
-    useFilter(order);
-
-
-  const textStatus = (id) => {
-    switch (id) {
-      case 1:
-        return "Новое";
-      case 3:
-        return "Отменено";
-      case 4:
-        return "Подтверждено";
-      default:
-        return "Статус неизвестен";
-    }
-  };
-  const textCar = (id) => {
-    switch (id) {
-      case 1:
-        return "BMW";
-      case 2:
-        return "Hyundai";
-      default:
-        return "Марка неизвестна";
-    }
-  };
+  const [orders, setOrders] = useState([]);
+  const [products, setProducts] = useState([]);
+  const [statuses, setStatuses] = useState([]);
+  const { filteredData, filters, updateFilters } = useFilter(orders);
 
   useEffect(() => {
     const fetchOrder = async () => {
       const data = await getOrders();
-      setOrder(data);
+      setOrders(data.orders);
+      setStatuses(data.statuses);
+      setProducts(data.products);
     };
     fetchOrder();
   }, []);
 
   const handleStatusChange = async (id, newStatus) => {
-    const updatedCards = cards.map((card) =>
-      card.id === id ? { ...card, id_status: newStatus } : card
+    const updatedOrders = orders.map((order) =>
+      order.id === id ? { ...order, id_status: newStatus } : order
     );
-    setOrder(updatedCards);
+    setOrders(updatedOrders);
     await updateOrder(id, newStatus);
   };
 
   return (
-    <div className={styles.admin}>
-      <Link to={"/profile/allOrder"}>
-        <button>Вернуться</button>
-      </Link>
-      <h2>Администраторская панель</h2>
-      <div className={styles.filters}>
-        <select
-          value={filters.status}
-          onChange={(e) => updateFilters({ status: e.target.value })}
-        >
-          <option value="">Выберите статус</option>
-          <option value="1">Новое</option>
-          <option value="3">Отменено</option>
-          <option value="4">Подтверждено</option>
-        </select>
-        <select
-          value={filters.car}
-          onChange={(e) => updateFilters({ car: e.target.value })}
-        >
-          <option value="">Выберите марку</option>
-          <option value="1">BMW</option>
-          <option value="2">Hyundai</option>
-        </select>
-        <button onClick={clearFilters}>Сбросить фильтры</button>
+    <Section>
+      <div className={styles.admin}>
+        <div className={styles.info}>
+          <Link to={"/profile/allOrder"}>
+            <Button variant="text">Вернуться</Button>
+          </Link>
+          <h2>Администраторская панель</h2>
+          <Filter
+            filters={filters}
+            order={orders}
+            products={products}
+            statuses={statuses}
+            updateFilters={updateFilters}
+          />
+        </div>
+        <div className={styles.cards}>
+          {filteredData.map((order) => (
+            <AdminOrderCard
+              key={order.id}
+              order={order}
+              products={products}
+              statuses={statuses}
+              handleStatusChange={handleStatusChange}
+            />
+          ))}
+        </div>
       </div>
-      <div className={styles.cards}>
-        {filteredData.map((card) => (
-          <div key={card.id} className={styles.card}>
-            <h3>
-              {textCar(card.id_car)} - {card.booking_date}
-            </h3>
-            <p>Статус: {textStatus(card.id_status)}</p>
-            <div className={styles.buttons}>
-              <Button
-                variant="outlined"
-                onClick={() => handleStatusChange(card.id, 4)}
-              >
-                Подтверждено
-              </Button>
-              <Button
-                variant="outlined"
-                onClick={() => handleStatusChange(card.id, 3)}
-              >
-                Отклонено
-              </Button>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
+    </Section>
   );
 };
 

@@ -23,8 +23,14 @@ export const getUsers = async () => {
 
 export const getOrders = async () => {
   try {
-    const response = await apiClient.get("/orders");
-    return response.data;
+    const orders = await apiClient.get("/orders");
+    const product = await apiClient.get(`/products`);
+    const status = await apiClient.get(`/status`);
+    return {
+      orders: orders.data,
+      products: product.data,
+      statuses: status.data,
+    };
   } catch (error) {
     console.error("Error fetching order:", error);
     throw error;
@@ -34,8 +40,8 @@ export const getOrders = async () => {
 export const getOrdersById = async (id_user) => {
   try {
     const order = await apiClient.get(`/orders/${id_user}`);
-    const product = await apiClient.get(`/products/`);
-    const status = await apiClient.get(`/status/`);
+    const product = await apiClient.get(`/products`);
+    const status = await apiClient.get(`/status`);
     return {
       order: order.data,
       product: product.data,
@@ -116,6 +122,5 @@ export const updateOrder = async (id, id_status) => {
     throw error;
   }
 };
-
 
 export default apiClient;
