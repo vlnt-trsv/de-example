@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "./Admin.module.css";
 import { AdminOrderCard } from "../../components/OrderCard/OrderCard";
-import { getOrders, updateOrder } from "../../api/api";
+import { getOrders, getUserById, updateOrder } from "../../api/api";
 import useFilter from "../../hooks/useFilter";
 import Filter from "../../components/Filter/Filter";
 import Section from "../../components/Section/Section";

@@ -51,6 +51,18 @@ app.get("/api/users", async (req, res) => {
   }
 });
 
+app.get("/api/user/:id_user", async (req, res) => {
+  const { id_user } = req.params;
+  try {
+    const [results] = await db.query("SELECT * FROM `user` WHERE id = ?", [
+      id_user,
+    ]);
+    res.json(results);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 app.get("/api/orders", async (req, res) => {
   try {
     const [results] = await db.query("SELECT * FROM `order`");

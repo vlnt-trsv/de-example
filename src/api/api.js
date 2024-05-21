@@ -21,6 +21,16 @@ export const getUsers = async () => {
   }
 };
 
+export const getUserById = async (id_user) => {
+  try {
+    const response = await apiClient.get(`/user/${id_user}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    throw error;
+  }
+};
+
 export const getOrders = async () => {
   try {
     const orders = await apiClient.get("/orders");
