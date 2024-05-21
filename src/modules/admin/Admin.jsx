@@ -9,8 +9,7 @@ const Admin = () => {
   const [order, setOrder] = useState([]);
   const { filteredData, filters, updateFilters, clearFilters } =
     useFilter(order);
-  console.log(filteredData);
-  console.log(filters);
+
 
   const textStatus = (id) => {
     switch (id) {
@@ -53,7 +52,7 @@ const Admin = () => {
 
   return (
     <div className={styles.admin}>
-      <Link to={"/profile/allRequest"}>
+      <Link to={"/profile/allOrder"}>
         <button>Вернуться</button>
       </Link>
       <h2>Администраторская панель</h2>
